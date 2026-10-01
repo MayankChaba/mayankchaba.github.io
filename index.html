@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Data Slayer — practical web-scraping & automation recipes</title>
+  <meta name="description" content="Copy-paste tutorials and use cases for scraping LinkedIn, Instagram, Facebook, TikTok and X with Apify actors — no login required, no proxies to manage.">
+  <link rel="canonical" href="https://mayankchaba.github.io/">
+
+  <!-- Google Analytics 4 — set the Measurement ID (Admin → Data Streams → G-XXXXXXXXXX) -->
+  <!--
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-XXXXXXXXXX');
+  </script>
+  -->
+
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Data Slayer">
+  <meta property="og:title" content="Data Slayer — practical web-scraping & automation recipes">
+  <meta property="og:description" content="Copy-paste tutorials for scraping and automating social platforms with Apify actors.">
+  <meta property="og:url" content="https://mayankchaba.github.io/">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Organization",
+        "@id": "https://mayankchaba.github.io/#org",
+        "name": "Data Slayer",
+        "url": "https://mayankchaba.github.io/",
+        "sameAs": [
+          "https://apify.com/data-slayer",
+          "https://mayankchaba.github.io/data-slayer-tutorials/",
+          "https://github.com/MayankChaba"
+        ]
+      },
+      {
+        "@type": "WebSite",
+        "@id": "https://mayankchaba.github.io/#website",
+        "name": "Data Slayer",
+        "url": "https://mayankchaba.github.io/",
+        "publisher": { "@id": "https://mayankchaba.github.io/#org" }
+      }
+    ]
+  }
+  </script>
+
+  <style>
+    :root{
+      --bg:#0b1020; --panel:#141a2e; --panel-2:#1b2340; --text:#e8ecf8;
+      --muted:#9aa4c4; --accent:#7c9cff; --accent-2:#4ade80; --line:#26304f;
+      --max:1040px; --radius:16px;
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0; background:radial-gradient(1200px 600px at 50% -200px,#1a2445 0%,var(--bg) 55%) no-repeat,var(--bg);
+      color:var(--text); font:16px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+      -webkit-font-smoothing:antialiased;
+    }
+    a{color:var(--accent); text-decoration:none}
+    a:hover{text-decoration:underline}
+    .wrap{max-width:var(--max); margin:0 auto; padding:0 22px}
+    header{padding:26px 0}
+    .brand{display:flex; align-items:center; gap:10px; font-weight:700; letter-spacing:.2px}
+    .brand .dot{width:12px;height:12px;border-radius:4px;background:linear-gradient(135deg,var(--accent),var(--accent-2));display:inline-block}
+    .hero{padding:56px 0 34px}
+    .eyebrow{display:inline-block;font-size:12.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent-2);
+      border:1px solid var(--line);border-radius:999px;padding:6px 12px;background:rgba(74,222,128,.07)}
+    h1{font-size:clamp(30px,5vw,52px); line-height:1.08; margin:20px 0 14px; letter-spacing:-.02em}
+    h1 .grad{background:linear-gradient(120deg,#a9bcff,#4ade80);-webkit-background-clip:text;background-clip:text;color:transparent}
+    .lede{font-size:clamp(16px,2.1vw,19px); color:var(--muted); max-width:720px; margin:0 0 30px}
+    .cta{display:flex; flex-wrap:wrap; gap:14px; align-items:center}
+    .btn{display:inline-flex; align-items:center; gap:8px; padding:14px 20px; border-radius:12px; font-weight:650; border:1px solid transparent}
+    .btn-primary{background:linear-gradient(135deg,var(--accent),#5f7ff0); color:#0a0f1f}
+    .btn-primary:hover{text-decoration:none; filter:brightness(1.06)}
+    .btn-ghost{border-color:var(--line); color:var(--text); background:rgba(255,255,255,.02)}
+    .btn-ghost:hover{text-decoration:none; background:rgba(255,255,255,.05)}
+    .grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:16px}
+    section{padding:34px 0}
+    h2{font-size:clamp(20px,3vw,26px); margin:0 0 6px; letter-spacing:-.01em}
+    .sub{color:var(--muted); margin:0 0 22px}
+    .card{display:block; padding:20px; border:1px solid var(--line); border-radius:var(--radius);
+      background:linear-gradient(180deg,var(--panel),var(--panel-2)); transition:transform .12s ease, border-color .12s ease}
+    .card:hover{transform:translateY(-2px); border-color:#3a4a7a; text-decoration:none}
+    .card h3{margin:0 0 8px; font-size:16.5px; color:var(--text)}
+    .card p{margin:0; color:var(--muted); font-size:14.5px}
+    .card .tag{display:inline-block; margin-top:12px; font-size:12px; color:var(--accent-2)}
+    footer{border-top:1px solid var(--line); margin-top:20px; padding:26px 0 46px; color:var(--muted); font-size:14px}
+    footer a{color:var(--muted)}
+    .fine{font-size:12.5px;color:#7c86a6;margin-top:10px}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="brand"><span class="dot" aria-hidden="true"></span> Data Slayer</div>
+    </header>
+
+    <main>
+      <section class="hero" style="padding-top:14px">
+        <span class="eyebrow">Web-scraping &amp; automation recipes</span>
+        <h1>Turn any public page into <span class="grad">structured data</span> — no login, no proxies.</h1>
+        <p class="lede">
+          Data Slayer builds Apify actors for LinkedIn, Instagram, Facebook, TikTok and X.
+          The tutorials hub shows exactly what to send, what you get back, and how to wire it
+          into your workflow. Start with a recipe, run the actor, ship the data.
+        </p>
+        <div class="cta">
+          <a class="btn btn-primary" href="https://mayankchaba.github.io/data-slayer-tutorials/?utm_source=github&amp;utm_medium=landing&amp;utm_campaign=root">Browse the tutorials hub →</a>
+          <a class="btn btn-ghost" href="https://apify.com/data-slayer?utm_source=github&amp;utm_medium=landing&amp;utm_campaign=root">See the actors on Apify</a>
+        </div>
+      </section>
+
+      <section>
+        <h2>What you'll find in the hub</h2>
+        <p class="sub">Two ways in — pick a job to be done, or jump straight to a platform guide.</p>
+        <div class="grid">
+          <a class="card" href="https://mayankchaba.github.io/data-slayer-tutorials/use-cases/?utm_source=github&amp;utm_medium=landing&amp;utm_campaign=root">
+            <h3>Use-case articles</h3>
+            <p>One page per real query — “scrape LinkedIn company posts”, “export Instagram comments”, and 600+ more.</p>
+            <span class="tag">Start here →</span>
+          </a>
+          <a class="card" href="https://mayankchaba.github.io/data-slayer-tutorials/actors/?utm_source=github&amp;utm_medium=landing&amp;utm_campaign=root">
+            <h3>Actor guides</h3>
+            <p>Every Data Slayer actor, with its input schema, real output shape, and pricing.</p>
+            <span class="tag">Browse actors →</span>
+          </a>
+          <a class="card" href="https://mayankchaba.github.io/data-slayer-tutorials/?utm_source=github&amp;utm_medium=landing&amp;utm_campaign=root">
+            <h3>Step-by-step tutorials</h3>
+            <p>Copy-paste recipes that go from a URL or keyword to a spreadsheet — including n8n, Make and Zapier.</p>
+            <span class="tag">Read tutorials →</span>
+          </a>
+        </div>
+      </section>
+
+      <section>
+        <h2>Featured guides</h2>
+        <p class="sub">Real, runnable recipes from the hub.</p>
+        <div class="grid">
+          <a class="card" href="https://mayankchaba.github.io/data-slayer-tutorials/tutorials/scrape-linkedin-company-posts-without-cookies/">
+            <h3>Scrape LinkedIn company posts without cookies</h3>
+            <p>Competitor content audits and engagement benchmarks — no LinkedIn login.</p>
+          </a>
+          <a class="card" href="https://mayankchaba.github.io/data-slayer-tutorials/tutorials/instagram-post-and-reel-analytics-by-url/">
+            <h3>Instagram post &amp; reel analytics by URL</h3>
+            <p>Views, likes, comments, shares and saves in bulk.</p>
+          </a>
+          <a class="card" href="https://mayankchaba.github.io/data-slayer-tutorials/tutorials/refresh-your-crm-with-fresh-linkedin-profile-data/">
+            <h3>Refresh your CRM with fresh LinkedIn profile data</h3>
+            <p>Turn a column of profile URLs into current, clean CRM records.</p>
+          </a>
+          <a class="card" href="https://mayankchaba.github.io/data-slayer-tutorials/tutorials/find-warm-intro-paths-into-any-linkedin-account/">
+            <h3>Find warm intro paths into any LinkedIn account</h3>
+            <p>Ranked warm paths and the best connector to ask.</p>
+          </a>
+        </div>
+      </section>
+
+      <section>
+        <div class="grid">
+          <div class="card" style="background:linear-gradient(135deg,#1c2748,#141a2e)">
+            <h3>Ready to run one?</h3>
+            <p style="margin-bottom:16px">Every actor is on the Apify Store. Open it, paste your input, get JSON or CSV.</p>
+            <a class="btn btn-primary" href="https://apify.com/data-slayer?utm_source=github&amp;utm_medium=landing&amp;utm_campaign=root">Open Apify Store →</a>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <div>Data Slayer — practical web-scraping &amp; automation recipes.</div>
+      <div class="fine">
+        <a href="https://mayankchaba.github.io/data-slayer-tutorials/">Tutorials hub</a> ·
+        <a href="https://apify.com/data-slayer">Apify Store</a> ·
+        <a href="https://github.com/MayankChaba">GitHub</a>
+      </div>
+    </footer>
+  </div>
+</body>
+</html>
