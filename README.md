@@ -3,7 +3,7 @@
 Root landing page for the **Data Slayer** tutorials hub.
 
 One page, static, no build step: it funnels visitors into the content hub at
-<https://mayankchaba.github.io/data-slayer-tutorials/> and the Apify Store at
+<https://dataslayer.dev/> and the Apify Store at
 <https://apify.com/data-slayer>.
 
 - `index.html` — the landing page (self-contained CSS, JSON-LD Organization/WebSite).
@@ -11,7 +11,8 @@ One page, static, no build step: it funnels visitors into the content hub at
 - `robots.txt` — allow-all + hub sitemap pointer (domain-root scoped).
 - `sitemap.xml` — the single landing URL.
 
-Custom domain (e.g. `dataslayer.dev`) will be added later via a `CNAME` — the hub
-keeps its `/data-slayer-tutorials/` paths, so links here keep working.
+Legacy funnel: the tutorials hub now lives at **https://dataslayer.dev/** (Cloudflare
+Pages); the old `mayankchaba.github.io/data-slayer-tutorials/` project site was retired.
+This page stays live to catch the old root traffic and point it at the new domain.
 
 Source of record: `portfolio-os/distribution/content/hub/root-landing/`.
